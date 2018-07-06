@@ -9,46 +9,46 @@ class TicTacToe
 
 # Define your WIN_COMBINATIONS constant
 
-WIN_COMBINATIONS = [
-  [0,1,2], # Top row
-  [3,4,5], # Middle row
-  [6,7,8], # Bottom row
-  [0,3,6], # Left column
-  [1,4,7], # Middle column
-  [2,5,8], # Right column
-  [0,4,8], # Diagonal top-left to bottom-right
-  [2,4,6] # Diagonal top-right to bottom-left
-]
+  WIN_COMBINATIONS = [
+    [0,1,2], # Top row
+    [3,4,5], # Middle row
+    [6,7,8], # Bottom row
+    [0,3,6], # Left column
+    [1,4,7], # Middle column
+    [2,5,8], # Right column
+    [0,4,8], # Diagonal top-left to bottom-right
+    [2,4,6] # Diagonal top-right to bottom-left
+  ]
 
-def won?
-  WIN_COMBINATIONS.each do |current_combo|
-    position_1 = @board[current_combo[0]]
-    position_2 = @board[current_combo[1]]
-    position_3 = @board[current_combo[2]]
-    if position_1 == "X" && position_2 == "X" && position_3 == "X"
-      return current_combo
-    elsif position_1 == "O" && position_2 == "O" && position_3 == "O"
-      return current_combo
-    else
-      false
+  def won?
+    WIN_COMBINATIONS.each do |current_combo|
+      position_1 = @board[current_combo[0]]
+      position_2 = @board[current_combo[1]]
+      position_3 = @board[current_combo[2]]
+      if position_1 == "X" && position_2 == "X" && position_3 == "X"
+        return current_combo
+      elsif position_1 == "O" && position_2 == "O" && position_3 == "O"
+        return current_combo
+      else
+        false
+      end
     end
-  end
-  return false
-end
-
-def full?
-  is_full = [0,1,2,3,4,5,6,7,8].all? do |each_space|
-    position_taken?(each_space)
-  end
-end
-
-def draw?
-  if full? && !won?
-    return true
-  else
     return false
   end
-end
+
+  def full?
+    is_full = [0,1,2,3,4,5,6,7,8].all? do |each_space|
+      position_taken?(each_space)
+    end
+  end
+
+  def draw?
+    if full? && !won?
+      return true
+    else
+      return false
+    end
+  end
 
 def over?
   if draw? || won?
@@ -78,7 +78,7 @@ def turn_count
 end
 
 def current_player
-  how_many_turns = turn_count(board)
+  how_many_turns = turn_count
   how_many_turns % 2 == 0 ? "X" : "O" # ternary operator
 end
 
@@ -95,11 +95,11 @@ def input_to_index(user_input)
   user_input.to_i - 1
 end
 
-def move(board, index, current_player)
+def move(index, current_player)
   @board[index] = current_player
 end
 
-def position_taken?(board, location)
+def position_taken?(location)
   @board[location] != " " && board[location] != ""
 end
 
@@ -113,7 +113,7 @@ def turn
   input = gets.strip
   index = input_to_index(input)
   if valid_move?(index)
-    move(index, current_player
+    move(index, current_player)
     display_board
   else
     turn
