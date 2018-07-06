@@ -20,11 +20,11 @@ WIN_COMBINATIONS = [
   [2,4,6] # Diagonal top-right to bottom-left
 ]
 
-def won?(board)
+def won?
   WIN_COMBINATIONS.each do |current_combo|
-    position_1 = board[current_combo[0]]
-    position_2 = board[current_combo[1]]
-    position_3 = board[current_combo[2]]
+    position_1 = @board[current_combo[0]]
+    position_2 = @board[current_combo[1]]
+    position_3 = @board[current_combo[2]]
     if position_1 == "X" && position_2 == "X" && position_3 == "X"
       return current_combo
     elsif position_1 == "O" && position_2 == "O" && position_3 == "O"
@@ -36,40 +36,40 @@ def won?(board)
   return false
 end
 
-def full?(board)
+def full?
   is_full = [0,1,2,3,4,5,6,7,8].all? do |each_space|
-    position_taken?(board, each_space)
+    position_taken?(each_space)
   end
 end
 
-def draw?(board)
-  if full?(board) && !won?(board)
+def draw?
+  if full? && !won?
     return true
   else
     return false
   end
 end
 
-def over?(board)
-  if draw?(board) || won?(board)
+def over?
+  if draw? || won?
     return true
   else
     return false
   end
 end
 
-def winner(board)
-  winning_combo = won?(board)
+def winner
+  winning_combo = won?
   if winning_combo == false || nil
     return nil
   else
-    return board[winning_combo[0]]
+    return @board[winning_combo[0]]
   end
 end
 
-def turn_count(board)
+def turn_count
   count = 0
-  board.each do |this_space|
+  @board.each do |this_space|
     if this_space == "X" || this_space == "O"
       count += 1
     end
@@ -77,18 +77,18 @@ def turn_count(board)
   return count
 end
 
-def current_player(board)
+def current_player
   how_many_turns = turn_count(board)
   how_many_turns % 2 == 0 ? "X" : "O" # ternary operator
 end
 
 
-def display_board(board)
-  puts " #{board[0]} | #{board[1]} | #{board[2]} "
+def display_board
+  puts " #{@board[0]} | #{@board[1]} | #{@board[2]} "
   puts "-----------"
-  puts " #{board[3]} | #{board[4]} | #{board[5]} "
+  puts " #{@board[3]} | #{@board[4]} | #{@board[5]} "
   puts "-----------"
-  puts " #{board[6]} | #{board[7]} | #{board[8]} "
+  puts " #{@board[6]} | #{@board[7]} | #{@board[8]} "
 end
 
 def input_to_index(user_input)
@@ -96,39 +96,39 @@ def input_to_index(user_input)
 end
 
 def move(board, index, current_player)
-  board[index] = current_player
+  @board[index] = current_player
 end
 
 def position_taken?(board, location)
-  board[location] != " " && board[location] != ""
+  @board[location] != " " && board[location] != ""
 end
 
 def valid_move?(board, index)
-  index.between?(0,8) && !position_taken?(board, index)
+  index.between?(0,8) && !position_taken?(index)
 end
 
-def turn(board)
-  display_board(board)
+def turn
+  display_board
   puts "Please enter 1-9:"
   input = gets.strip
   index = input_to_index(input)
-  if valid_move?(board, index)
-    move(board, index, current_player(board))
-    display_board(board)
+  if valid_move?(index)
+    move(index, current_player
+    display_board
   else
-    turn(board)
+    turn
   end
 end
 
 # Define your play method below
-def play(board)
-  until over?(board)
-    turn(board)
+def play
+  until over?
+    turn
   end
-  if draw?(board)
+  if draw?
     puts "Cat's Game!"
-  elsif won?(board)
-    puts "Congratulations #{winner(board)}!"
+  elsif won?
+    puts "Congratulations #{winner}!"
   end
 end
 end
